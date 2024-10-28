@@ -2,56 +2,54 @@
 
 {% block content %}
 
-<main class="container mt-3">
-  <div class="row">
-    <div class="col-9">
-      <div class="d-flex flex-column gap-3">
-        <div class="w-100" style="width: 18rem">
-          <div class="card-body">
-            <div class="row">
-              <div class="col-3">
-                <div class="border mb-2" style="height: 255px">
-                  <img src="jpg.jpg" alt="Avatar" class="img-fluid" />
-                </div>
-                <input class="form-control" type="number" value="5" placeholder="Default input"
-                  aria-label="default input example" />
+<div class="row">
+  <div class="col-9">
+    <div class="d-flex flex-column gap-3">
+      <div class="w-100" style="width: 18rem">
+        <div class="card-body">
+          <div class="row">
+            <div class="col-3">
+              <div class="border mb-2" style="height: 255px">
+                <img src="jpg.jpg" alt="Avatar" class="img-fluid" />
               </div>
-              <div class="col-9">
-                <h2 class="card-title text-center">
-                  {{ question.title }}
-                </h2>
-                <p class="card-text mb-5">
-                  {{ question.content }}
-                </p>
+              <input class="form-control" type="number" value="5" placeholder="Default input"
+                aria-label="default input example" />
+            </div>
+            <div class="col-9">
+              <h2 class="card-title text-center">
+                {{ question.title }}
+              </h2>
+              <p class="card-text mb-5">
+                {{ question.content }}
+              </p>
 
-                <div class="d-flex gap-3">
-                  Tags:
+              <div class="d-flex gap-3">
+                Tags:
 
-                  <a href="#" class="card-link">Another link</a>
-                  <a href="#" class="card-link">Another link</a>
-                  <a href="#" class="card-link">Another link</a>
-                  <a href="#" class="card-link">Another link</a>
-                </div>
+                <a href="#" class="card-link">Another link</a>
+                <a href="#" class="card-link">Another link</a>
+                <a href="#" class="card-link">Another link</a>
+                <a href="#" class="card-link">Another link</a>
               </div>
             </div>
           </div>
         </div>
-
-        <div class="d-flex flex-column mt-4 mb-4 gap-3">
-          {% for answer in answers %}
-          {% include 'includes/answerCard.html' %}
-          {% endfor %}
-        </div>
-
-        {% include 'includes/paginator.html' %}
-
-        <form>
-          <div class="form-group">
-            <textarea class="form-control mb-3" id="inputAnswer" rows="3"
-              placeholder="Enter your answer here"></textarea>
-          </div>
-          <button type="submit" class="btn btn-primary">Answer</button>
-        </form>
       </div>
 
-      {% endblock %}
+      <div class="d-flex flex-column mt-4 mb-4 gap-3">
+        {% for answer in answers %}
+        {% include 'includes/answerCard.html' %}
+        {% endfor %}
+      </div>
+
+      {% include 'includes/paginator.html' %}
+
+      <form>
+        <div class="form-group">
+          <textarea class="form-control mb-3" id="inputAnswer" rows="3" placeholder="Enter your answer here"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Answer</button>
+      </form>
+    </div>
+
+    {% endblock %}

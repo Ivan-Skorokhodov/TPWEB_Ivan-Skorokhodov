@@ -38,39 +38,39 @@
     </div>
   </nav>
 
+  <main class="container mt-3">
+    {% block content %}
+    {% endblock %}
+    </div>
+    <div class="col">
+      <section class="mb-3">
+        <h2>Popular Tags</h2>
+        <div>
+          <span class="badge text-bg-primary">Primary</span>
+          <span class="badge text-bg-secondary">Secondary</span>
+          <span class="badge text-bg-success">Success</span>
+          <span class="badge text-bg-danger">Danger</span>
+          <span class="badge text-bg-warning">Warning</span>
+          <span class="badge text-bg-info">Info</span>
+          <span class="badge text-bg-light">Light</span>
+          <span class="badge text-bg-dark">Dark</span>
+        </div>
+      </section>
 
-  {% block content %}
-  {% endblock %}
-  </div>
-  <div class="col">
-    <section class="mb-3">
-      <h2>Popular Tags</h2>
-      <div>
-        <span class="badge text-bg-primary">Primary</span>
-        <span class="badge text-bg-secondary">Secondary</span>
-        <span class="badge text-bg-success">Success</span>
-        <span class="badge text-bg-danger">Danger</span>
-        <span class="badge text-bg-warning">Warning</span>
-        <span class="badge text-bg-info">Info</span>
-        <span class="badge text-bg-light">Light</span>
-        <span class="badge text-bg-dark">Dark</span>
-      </div>
-    </section>
-
-    <section>
-      <h2>Best members</h2>
-      <div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="#">Member</a></li>
-          <li class="list-group-item"><a href="#">Member</a></li>
-          <li class="list-group-item"><a href="#">Member</a></li>
-          <li class="list-group-item"><a href="#">Member</a></li>
-          <li class="list-group-item"><a href="#">Member</a></li>
-        </ul>
-      </div>
-    </section>
-  </div>
-  </div>
+      <section>
+        <h2>Best members</h2>
+        <div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item"><a href="#">Member</a></li>
+            <li class="list-group-item"><a href="#">Member</a></li>
+            <li class="list-group-item"><a href="#">Member</a></li>
+            <li class="list-group-item"><a href="#">Member</a></li>
+            <li class="list-group-item"><a href="#">Member</a></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    </div>
   </main>
   <script src="{% static 'js/bootstrap.min.js'%}"></script>
 </body>
