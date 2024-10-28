@@ -1,18 +1,27 @@
 {% extends 'layouts/base.html'%}
 
-{% block content %}
+{% block corner %}
+{% include 'includes/registretedUserCorner.html' %}
+{% endblock %}
+
+
+{% block header %}
+
 <div class="d-flex gap-3 align-items-center">
   <h1>New Questions</h1>
   <a href="{% url 'hot' %}">Hot Questions</a>
 </div>
 
-<div class="row">
-  <div class="col-9">
-    <div class="d-flex flex-column gap-3">
-      {% for question in questions %}
-      {% include 'includes/questionCard.html' %}
-      {% endfor %}
-    </div>
-    {% include 'includes/paginator.html' %}
+{% endblock %}
 
-    {% endblock %}
+
+{% block content %}
+
+<div class="d-flex flex-column gap-3">
+  {% for question in questions %}
+  {% include 'includes/questionCard.html' %}
+  {% endfor %}
+</div>
+{% include 'includes/paginator.html' %}
+
+{% endblock %}

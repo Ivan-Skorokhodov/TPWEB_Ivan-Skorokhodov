@@ -1,103 +1,38 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Log in</title>
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
-  </head>
+{% extends 'layouts/base.html'%}
 
-  <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <div class="d-flex w-100 justify-content-between align-items-center">
-          <a class="navbar-brand" href="#">Navbar</a>
+{% block corner %}
+{% include 'includes/unregistretedUserCorner.html' %}
+{% endblock %}
 
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
 
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">Ask</button>
-          </form>
+{% block header %}
 
-          <div class="d-flex gap-3">
-            <a href="#">log in</a>
-            <a href="#">register</a>
-          </div>
-        </div>
-      </div>
-    </nav>
+<div class="d-flex align-items-center mb-4">
+  <h1>Log in</h1>
+</div>
 
-    <main class="container mt-3">
-      <div class="d-flex align-items-center mb-4">
-        <h1>Log in</h1>
-      </div>
-      <div class="row">
-        <div class="col-9 gap-4">
-          <form class="was-validated col-6">
-            <div class="mb-3">
-              <label class="form-label">Login</label>
-              <input class="form-control" type="text" id="login" required />
-              <div class="invalid-feedback">Please enter a login</div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Password</label>
-              <input class="form-control" type="text" id="password" required />
-              <div class="invalid-feedback">Please enter a password</div>
-            </div>
-            <div class="mb-3">
-              <button type="submit" class="btn btn-primary">Log in</button>
-            </div>
-          </form>
-          <div>
-            <a href="#" class="h5 text-primary">Create a new account</a>
-          </div>
-        </div>
-        <div class="col">
-          <section class="mb-3">
-            <h2>Popular Tags</h2>
-            <div>
-              <span class="badge text-bg-primary">Primary</span>
-              <span class="badge text-bg-secondary">Secondary</span>
-              <span class="badge text-bg-success">Success</span>
-              <span class="badge text-bg-danger">Danger</span>
-              <span class="badge text-bg-warning">Warning</span>
-              <span class="badge text-bg-info">Info</span>
-              <span class="badge text-bg-light">Light</span>
-              <span class="badge text-bg-dark">Dark</span>
-            </div>
-          </section>
+{% endblock %}
 
-          <section>
-            <h2>Best members</h2>
-            <div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="#">Member</a></li>
-                <li class="list-group-item"><a href="#">Member</a></li>
-                <li class="list-group-item"><a href="#">Member</a></li>
-                <li class="list-group-item"><a href="#">Member</a></li>
-                <li class="list-group-item"><a href="#">Member</a></li>
-              </ul>
-            </div>
-          </section>
-        </div>
-      </div>
-    </main>
-    <script src="../static/js/bootstrap.min.js"></script>
-  </body>
-</html>
+
+{% block content %}
+
+<form class="was-validated col-6">
+  <div class="mb-3">
+    <label class="form-label">Login</label>
+    <input class="form-control" type="text" id="login" required />
+    <div class="invalid-feedback">Please enter a login</div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Password</label>
+    <input class="form-control" type="text" id="password" required />
+    <div class="invalid-feedback">Please enter a password</div>
+  </div>
+  <div class="mb-3">
+    <button type="submit" class="btn btn-primary">Log in</button>
+  </div>
+</form>
+<div>
+  <a href="{% url 'signup' %}" class="h5 text-primary">Create a new account</a>
+</div>
+
+{% endblock %}

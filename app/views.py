@@ -38,6 +38,14 @@ def hot(request):
     return render(request, 'hot.html', {'questions': page.object_list, 'page_obj': page})
 
 
+def login(request):
+    return render(request, 'login.html')
+
+
+def signup(request):
+    return render(request, 'signup.html')
+
+
 def question(request, question_id):
     item = QUESTIONS[question_id]
     page = paginate(ANSWERS, request, 5)
