@@ -46,6 +46,14 @@ def signup(request):
     return render(request, 'signup.html')
 
 
+def ask(request):
+    return render(request, 'ask.html')
+
+
+def settings(request):
+    return render(request, 'settings.html')
+
+
 def question(request, question_id):
     item = QUESTIONS[question_id]
     page = paginate(ANSWERS, request, 5)

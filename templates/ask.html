@@ -1,130 +1,48 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Ask</title>
-    <link rel="stylesheet" href="../static/css/bootstrap.min.css" />
-  </head>
+{% extends 'layouts/base.html'%}
 
-  <body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid">
-        <div class="d-flex w-100 justify-content-between align-items-center">
-          <a class="navbar-brand" href="#">Navbar</a>
+{% block corner %}
+{% include 'includes/unregistretedUserCorner.html' %}
+{% endblock %}
 
-          <button
-            class="navbar-toggler"
-            type="button"
-            data-bs-toggle="collapse"
-            data-bs-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
-          >
-            <span class="navbar-toggler-icon"></span>
-          </button>
 
-          <form class="d-flex" role="search">
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search"
-              aria-label="Search"
-            />
-            <button class="btn btn-outline-success" type="submit">Ask</button>
-          </form>
+{% block header %}
 
-          <div class="d-flex gap-3">
-            <a href="#">log in</a>
-            <a href="#">register</a>
-          </div>
-        </div>
-      </div>
-    </nav>
+<div class="d-flex gap-3 align-items-center">
+  <h1>New Question</h1>
+</div>
 
-    <main class="container mt-3">
-      <div class="d-flex align-items-center mb-4">
-        <h1>New Question</h1>
-      </div>
-      <div class="row">
-        <div class="col-9">
-          <form class="was-validated">
-            <div class="mb-3">
-              <label class="form-label">Title</label>
-              <input
-                class="form-control"
-                type="text"
-                id="titleQuestion"
-                required
-              />
-              <div class="invalid-feedback">
-                Please enter a message in the textarea.
-              </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Text</label>
-              <textarea
-                class="form-control"
-                type="text"
-                id="textQuestion"
-                style="max-height: 550px"
-                rows="4"
-                required
-              ></textarea>
-              <div class="invalid-feedback">
-                Please enter a message in the textarea.
-              </div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label">Tags</label>
-              <input
-                class="form-control"
-                type="text"
-                id="titleQuestion"
-                required
-              />
-              <div class="invalid-feedback">
-                Please enter a message in the textarea.
-              </div>
-            </div>
-            <div class="mb-3">
-              <button type="submit" class="btn btn-primary">
-                Ask the question
-              </button>
-            </div>
-          </form>
-        </div>
-        <div class="col">
-          <section class="mb-3">
-            <h2>Popular Tags</h2>
-            <div>
-              <span class="badge text-bg-primary">Primary</span>
-              <span class="badge text-bg-secondary">Secondary</span>
-              <span class="badge text-bg-success">Success</span>
-              <span class="badge text-bg-danger">Danger</span>
-              <span class="badge text-bg-warning">Warning</span>
-              <span class="badge text-bg-info">Info</span>
-              <span class="badge text-bg-light">Light</span>
-              <span class="badge text-bg-dark">Dark</span>
-            </div>
-          </section>
+{% endblock %}
 
-          <section>
-            <h2>Best members</h2>
-            <div>
-              <ul class="list-group list-group-flush">
-                <li class="list-group-item"><a href="#">Member</a></li>
-                <li class="list-group-item"><a href="#">Member</a></li>
-                <li class="list-group-item"><a href="#">Member</a></li>
-                <li class="list-group-item"><a href="#">Member</a></li>
-                <li class="list-group-item"><a href="#">Member</a></li>
-              </ul>
-            </div>
-          </section>
-        </div>
-      </div>
-    </main>
-    <script src="../static/js/bootstrap.min.js"></script>
-  </body>
-</html>
+
+{% block content %}
+
+<form class="was-validated">
+  <div class="mb-3">
+    <label class="form-label">Title</label>
+    <input class="form-control" type="text" id="titleQuestion" required />
+    <div class="invalid-feedback">
+      Please enter a message in the textarea.
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Text</label>
+    <textarea class="form-control" type="text" id="textQuestion" style="max-height: 550px" rows="4" required></textarea>
+    <div class="invalid-feedback">
+      Please enter a message in the textarea.
+    </div>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Tags</label>
+    <input class="form-control" type="text" id="titleQuestion" required />
+    <div class="invalid-feedback">
+      Please enter a message in the textarea.
+    </div>
+  </div>
+  <div class="mb-3">
+    <button type="submit" class="btn btn-primary">
+      Ask the question
+    </button>
+  </div>
+</form>
+
+{% endblock %}
