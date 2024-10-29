@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, InvalidPage
+from django.http import HttpResponseBadRequest
 
 
 QUESTIONS = []
@@ -23,18 +24,31 @@ for i in range(10):
 def paginate(objects_list, request, per_page=10):
     paginator = Paginator(objects_list, per_page)
     page_num = request.GET.get('page', 1)
-    page = paginator.page(page_num)
+
+    try:
+        page_num = int(page_num)
+    except ValueError:
+        return HttpResponseBadRequest("Invalid page number")
+
+    try:
+        page = paginator.page(page_num)
+    except InvalidPage:
+        return HttpResponseBadRequest("Page does not exist")
 
     return page
 
 
 def index(request):
     page = paginate(QUESTIONS, request)
+    if isinstance(page, HttpResponseBadRequest):
+        return page
     return render(request, 'index.html', {'questions': page.object_list, 'page_obj': page})
 
 
 def hot(request):
     page = paginate(QUESTIONS, request)
+    if isinstance(page, HttpResponseBadRequest):
+        return page
     return render(request, 'hot.html', {'questions': page.object_list, 'page_obj': page})
 
 
@@ -57,4 +71,6 @@ def settings(request):
 def question(request, question_id):
     item = QUESTIONS[question_id]
     page = paginate(ANSWERS, request, 5)
+    if isinstance(page, HttpResponseBadRequest):
+        return page
     return render(request, 'question.html', {'question': item, 'answers': page.object_list, 'page_obj': page})
