@@ -67,47 +67,47 @@ class Command(BaseCommand):
 
         answers = models.Answer.objects.all()
 
-        list_answerLikes = [models.AnswerLike() for i in range(ratio * 100)]
-        models.AnswerLike.objects.bulk_create(list_answerLikes)
+        # Добавление AnswerLike
+        list_answerLikes = []
         set_answerLikes = set()
-        count = 0
 
-        for answerLike in models.AnswerLike.objects.all():
+        for i in range(ratio * 100):
             new_profile = profiles[randint(0, len(profiles) - 1)]
             new_answer = answers[randint(0, len(answers) - 1)]
 
+            # Проверка на уникальность, чтобы не было дубликатов
             while (new_profile, new_answer) in set_answerLikes:
                 new_profile = profiles[randint(0, len(profiles) - 1)]
                 new_answer = answers[randint(0, len(answers) - 1)]
 
-            answerLike.profile.add(new_profile)
-            answerLike.answer.add(new_answer)
+            # Добавление пары профиля и ответа в список
+            list_answerLikes.append(models.AnswerLike(
+                profile=new_profile, answer=new_answer))
+            if i % 1000 == 0:
+                self.stdout.write(f"Fill database with {i} answerLikes")
             set_answerLikes.add((new_profile, new_answer))
 
-            count += 1
-            self.stdout.write(
-                f"Fill database with {count} answerLikes")
+        models.AnswerLike.objects.bulk_create(list_answerLikes)
 
-        list_questionLikes = [models.QuestionLike()
-                              for i in range(ratio * 100)]
-        models.QuestionLike.objects.bulk_create(list_questionLikes)
+        # Аналогично добавьте QuestionLike
+        list_questionLikes = []
         set_questionLikes = set()
-        count = 0
 
-        for questionLike in models.QuestionLike.objects.all():
+        for i in range(ratio * 100):
             new_profile = profiles[randint(0, len(profiles) - 1)]
             new_question = questions[randint(0, len(questions) - 1)]
 
+            # Проверка на уникальность
             while (new_profile, new_question) in set_questionLikes:
                 new_profile = profiles[randint(0, len(profiles) - 1)]
                 new_question = questions[randint(0, len(questions) - 1)]
 
-            questionLike.profile.add(new_profile)
-            questionLike.question.add(new_question)
+            list_questionLikes.append(models.QuestionLike(
+                profile=new_profile, question=new_question))
+            if i % 1000 == 0:
+                self.stdout.write(f"Fill database with {i} questionLikes")
             set_questionLikes.add((new_profile, new_question))
 
-            count += 1
-            self.stdout.write(
-                f"Fill database with {count} questionLikes")
+        models.QuestionLike.objects.bulk_create(list_questionLikes)
 
         self.stdout.write(f"Fill database with {ratio} coefficient")
