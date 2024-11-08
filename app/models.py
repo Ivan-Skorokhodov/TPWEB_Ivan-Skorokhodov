@@ -100,16 +100,20 @@ class Answer(models.Model):
 
 
 class AnswerLike(models.Model):
-    unique_together = ["profile", "answer"]
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    profile = models.ManyToManyField(Profile)
-    answer = models.ManyToManyField(Answer)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ["profile", "answer"]
 
 
 class QuestionLike(models.Model):
-    unique_together = ["profile", "question"]
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    profile = models.ManyToManyField(Profile)
-    question = models.ManyToManyField(Question)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ["profile", "question"]
