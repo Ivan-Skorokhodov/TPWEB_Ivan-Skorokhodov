@@ -15,7 +15,7 @@
           <div class="border mb-2" style="height: 255px">
             <img src="jpg.jpg" alt="Avatar" class="img-fluid" />
           </div>
-          <input class="form-control" type="number" value="5" placeholder="Default input"
+          <input class="form-control" type="number" value="{{ question.likes }}" placeholder="Default input"
             aria-label="default input example" />
         </div>
         <div class="col-9">
@@ -28,11 +28,9 @@
 
           <div class="d-flex gap-3">
             Tags:
-
-            <a href="#" class="card-link">Another link</a>
-            <a href="#" class="card-link">Another link</a>
-            <a href="#" class="card-link">Another link</a>
-            <a href="#" class="card-link">Another link</a>
+            {% for tag in tags %}
+            <a href="#" class="card-link">{{ tag.title }}</a>
+            {% endfor %}
           </div>
         </div>
       </div>

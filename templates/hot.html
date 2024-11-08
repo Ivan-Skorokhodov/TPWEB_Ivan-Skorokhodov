@@ -17,7 +17,7 @@
 {% block content %}
 
 <div class="d-flex flex-column gap-3">
-  {% for question in questions %}
+  {% for question, tagsList in zipped %}
   {% include 'includes/questionCard.html' %}
   {% endfor %}
 </div>

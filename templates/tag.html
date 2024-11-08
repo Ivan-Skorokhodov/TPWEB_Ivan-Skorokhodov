@@ -8,8 +8,7 @@
 {% block header %}
 
 <div class="d-flex gap-3 align-items-center">
-  <h1>New Questions</h1>
-  <a href="{% url 'hot' %}">Hot Questions</a>
+    <h1>Tag: {{ tag.title }}</h1>
 </div>
 
 {% endblock %}
@@ -18,9 +17,9 @@
 {% block content %}
 
 <div class="d-flex flex-column gap-3">
-  {% for question, tagsList in zipped %}
-  {% include 'includes/questionCard.html' %}
-  {% endfor %}
+    {% for question, tagsList in zipped %}
+    {% include 'includes/questionCard.html' %}
+    {% endfor %}
 </div>
 {% include 'includes/paginator.html' %}
 

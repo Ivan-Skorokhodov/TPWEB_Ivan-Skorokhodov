@@ -1,24 +1,7 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator, InvalidPage
 from django.http import HttpResponseBadRequest
-
-
-QUESTIONS = []
-
-for i in range(30):
-    QUESTIONS.append({
-        'title': f'Title {i}',
-        'id': i,
-        'content': f'Some very interesting text with id {i}'
-    })
-
-ANSWERS = []
-for i in range(10):
-    ANSWERS.append({
-        'title': f'Title {i}',
-        'id': i,
-        'content': f'Some very interesting text with id {i}'
-    })
+from app import models
 
 
 def paginate(objects_list, request, per_page=10):
@@ -39,17 +22,28 @@ def paginate(objects_list, request, per_page=10):
 
 
 def index(request):
-    page = paginate(QUESTIONS, request)
+    zipped_questions_tags = models.Question.objects.get_new_questions()
+    page = paginate(zipped_questions_tags, request)
     if isinstance(page, HttpResponseBadRequest):
         return page
-    return render(request, 'index.html', {'questions': page.object_list, 'page_obj': page})
+    return render(request, 'index.html', {'zipped': page.object_list, 'page_obj': page})
 
 
 def hot(request):
-    page = paginate(QUESTIONS, request)
+    zipped_questions_tags = models.Question.objects.get_hot_questions()
+    page = paginate(zipped_questions_tags, request)
     if isinstance(page, HttpResponseBadRequest):
         return page
-    return render(request, 'hot.html', {'questions': page.object_list, 'page_obj': page})
+    return render(request, 'hot.html', {'zipped': page.object_list, 'page_obj': page})
+
+
+def tag(request, tag_title):
+    tag = models.Tag.objects.get_tag_by_title(tag_title)
+    zipped_questions_tags = models.Question.objects.get_questions_by_tag(tag)
+    page = paginate(zipped_questions_tags, request)
+    if isinstance(page, HttpResponseBadRequest):
+        return page
+    return render(request, 'tag.html', {'zipped': page.object_list, 'tag': tag, 'page_obj': page})
 
 
 def login(request):
@@ -69,8 +63,10 @@ def settings(request):
 
 
 def question(request, question_id):
-    item = QUESTIONS[question_id]
-    page = paginate(ANSWERS, request, 5)
+    question = models.Question.objects.get_question_by_question_id(question_id)
+    tags = models.Tag.objects.get_tags_by_question(question)
+    answers = models.Answer.objects.get_answers_by_question(question)
+    page = paginate(answers, request, 5)
     if isinstance(page, HttpResponseBadRequest):
         return page
-    return render(request, 'question.html', {'question': item, 'answers': page.object_list, 'page_obj': page})
+    return render(request, 'question.html', {'question': question, 'answers': page.object_list, 'tags': tags, 'page_obj': page})
