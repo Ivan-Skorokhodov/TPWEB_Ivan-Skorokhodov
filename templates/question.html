@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html'%}
+{% load bootstrap5 %}
 
 {% block corner %}
 
@@ -51,11 +52,12 @@
 
   {% include 'includes/paginator.html' %}
 
-  <form>
-    <div class="form-group">
-      <textarea class="form-control mb-3" id="inputAnswer" rows="3" placeholder="Enter your answer here"></textarea>
-    </div>
+  <form action="{% url 'question' question.id %}" method="POST" class="form-group">
+    {% bootstrap_form form %}
+    {% csrf_token %}
+    {% buttons %}
     <button type="submit" class="btn btn-primary">Answer</button>
+    {% endbuttons %}
   </form>
 </div>
 

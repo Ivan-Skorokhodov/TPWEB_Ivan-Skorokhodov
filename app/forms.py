@@ -1,4 +1,3 @@
-from .models import Profile
 from django import forms
 from django.contrib.auth.models import User
 from app import models
@@ -43,7 +42,7 @@ class SignupForm(forms.ModelForm):
         user.set_password(self.cleaned_data['password'])
         user.save()
         avatar = self.cleaned_data.get('avatar')
-        Profile.objects.create(user=user, avatar=avatar)
+        models.Profile.objects.create(user=user, avatar=avatar)
 
         return user
 
@@ -57,6 +56,14 @@ class SettingsForm(forms.ModelForm):
 
     def clean(self):
         data = super().clean()
+
+        if len(User.objects.filter(username=data.get('username'))) > 1:
+            raise forms.ValidationError(
+                'User with this username is already exists')
+
+        if len(User.objects.filter(email=data.get('email'))) > 1:
+            raise forms.ValidationError(
+                'User with this email is already exists')
         return data
 
     def save(self, commit=True):
@@ -71,3 +78,53 @@ class SettingsForm(forms.ModelForm):
         profile.save()
 
         return user
+
+
+class AskForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Question
+        fields = ('title', 'content', 'tags')
+
+    def clean(self):
+        data = super().clean()
+
+        return data
+
+    def save(self, request, commit=True):
+        user = User.objects.get(id=request.user.id)
+        profile = models.Profile.objects.get(user=user)
+        question = models.Question.objects.create(
+            title=self.cleaned_data['title'],
+            content=self.cleaned_data['content'],
+            profile=profile,
+        )
+
+        question.tags.set(request.POST.getlist('tags'))
+
+        return question
+
+
+class AnswerForm(forms.ModelForm):
+
+    class Meta:
+        model = models.Answer
+        fields = ('title', 'content')
+
+    def clean(self):
+        data = super().clean()
+
+        return data
+
+    def save(self, request, question, commit=True):
+        user = User.objects.get(id=request.user.id)
+        profile = models.Profile.objects.get(user=user)
+
+        answer = models.Answer.objects.create(
+            title=self.cleaned_data['title'],
+            content=self.cleaned_data['content'],
+            profile=profile,
+            question=question,
+        )
+
+        return answer

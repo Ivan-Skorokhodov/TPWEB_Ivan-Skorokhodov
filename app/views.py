@@ -77,7 +77,20 @@ def signup(request):
 
 @login_required
 def ask(request):
-    return render(request, 'ask.html')
+    form = forms.AskForm
+    if request.method == 'POST':
+        form = forms.AskForm(request.POST)
+        if form.is_valid():
+            answerForm = forms.AnswerForm
+            question = form.save(request)
+            tags = models.Tag.objects.get_tags_by_question(question)
+            answers = models.Answer.objects.get_answers_by_question(question)
+            page = paginate(answers, request, 5)
+            if isinstance(page, HttpResponseBadRequest):
+                return page
+        return render(request, 'question.html', {'question': question, 'answers': page.object_list, 'tags': tags, 'page_obj': page, 'form': answerForm})
+
+    return render(request, 'ask.html', {'form': form})
 
 
 @login_required
@@ -98,10 +111,18 @@ def logout(request):
 
 @login_required
 def question(request, question_id):
+    form = forms.AnswerForm
     question = models.Question.objects.get_question_by_question_id(question_id)
     tags = models.Tag.objects.get_tags_by_question(question)
     answers = models.Answer.objects.get_answers_by_question(question)
     page = paginate(answers, request, 5)
     if isinstance(page, HttpResponseBadRequest):
         return page
-    return render(request, 'question.html', {'question': question, 'answers': page.object_list, 'tags': tags, 'page_obj': page})
+
+    if request.method == 'POST':
+        form = forms.AnswerForm(request.POST)
+        if form.is_valid():
+            form.save(request, question)
+            return render(request, 'question.html', {'question': question, 'answers': page.object_list, 'tags': tags, 'page_obj': page, 'form': form})
+
+    return render(request, 'question.html', {'question': question, 'answers': page.object_list, 'tags': tags, 'page_obj': page, 'form': form})

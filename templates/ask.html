@@ -1,4 +1,5 @@
 {% extends 'layouts/base.html'%}
+{% load bootstrap5 %}
 
 {% block corner %}
 
@@ -22,33 +23,14 @@
 
 {% block content %}
 
-<form class="was-validated">
-  <div class="mb-3">
-    <label class="form-label">Title</label>
-    <input class="form-control" type="text" id="titleQuestion" required />
-    <div class="invalid-feedback">
-      Please enter a message in the textarea.
-    </div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Text</label>
-    <textarea class="form-control" type="text" id="textQuestion" style="max-height: 550px" rows="4" required></textarea>
-    <div class="invalid-feedback">
-      Please enter a message in the textarea.
-    </div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Tags</label>
-    <input class="form-control" type="text" id="titleQuestion" required />
-    <div class="invalid-feedback">
-      Please enter a message in the textarea.
-    </div>
-  </div>
-  <div class="mb-3">
-    <button type="submit" class="btn btn-primary">
-      Ask the question
-    </button>
-  </div>
+<form action="{% url 'ask' %}" method="POST" class="was-validated">
+  {% bootstrap_form form %}
+  {% csrf_token %}
+  {% buttons %}
+  <button type="submit" class="btn btn-primary">
+    Ask the question
+  </button>
+  {% endbuttons %}
 </form>
 
 {% endblock %}
