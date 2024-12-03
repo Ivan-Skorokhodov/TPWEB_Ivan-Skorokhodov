@@ -1,8 +1,8 @@
 <div class="d-flex gap-1">
     <img src="asda.jpg" alt="Avatar" class="img-thumbnail" />
     <div>
-        <div>dr pepper</div>
+        <div>{{ request.user.username }}</div>
         <a href="{% url 'settings' %}">settings</a>
-        <a href="{% url 'login' %}">log out</a>
+        <a href="{% url 'logout' %}">log out</a>
     </div>
 </div>

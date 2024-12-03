@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    'bootstrap5',
 ]
 
 MIDDLEWARE = [
@@ -135,3 +136,5 @@ STATICFILES_DIRS = [
 ]
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 1000000
+
+LOGIN_URL = '/login/'

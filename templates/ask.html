@@ -1,7 +1,13 @@
 {% extends 'layouts/base.html'%}
 
 {% block corner %}
+
+{% if request.user.is_authenticated %}
+{% include 'includes/registretedUserCorner.html' %}
+{% else %}
 {% include 'includes/unregistretedUserCorner.html' %}
+{% endif %}
+
 {% endblock %}
 
 

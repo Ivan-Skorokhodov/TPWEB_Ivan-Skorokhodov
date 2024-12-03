@@ -1,14 +1,21 @@
 {% extends 'layouts/base.html'%}
+{% load bootstrap5 %}
 
 {% block corner %}
+
+{% if request.user.is_authenticated %}
 {% include 'includes/registretedUserCorner.html' %}
+{% else %}
+{% include 'includes/unregistretedUserCorner.html' %}
+{% endif %}
+
 {% endblock %}
 
 
 {% block header %}
 
 <div class="d-flex align-items-center mb-4">
-    <h1>Settings: Dr. Pepper</h1>
+    <h1>Settings: {{ request.user.username }}</h1>
 </div>
 
 {% endblock %}
@@ -16,26 +23,14 @@
 
 {% block content %}
 
-<form class="form-group col-6">
-    <div class="mb-3">
-        <label class="form-label">Login</label>
-        <input class="form-control" type="text" id="login" required />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Email</label>
-        <input class="form-control" type="text" id="email" required />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">NickName</label>
-        <input class="form-control" type="text" id="nickName" required />
-    </div>
-    <div class="mb-3">
-        <label class="form-label">Upload avatar</label>
-        <input type="file" class="form-control" aria-label="file example" required />
-    </div>
+<form action="{% url 'settings' %}" method="POST" class="form-group col-6">
+    {% bootstrap_form form %}
+    {% csrf_token %}
+    {% buttons %}
     <div>
         <button type="submit" class="btn btn-primary">Save</button>
     </div>
+    {% endbuttons %}
 </form>
 
 {% endblock %}

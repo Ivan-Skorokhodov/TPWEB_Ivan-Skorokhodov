@@ -1,7 +1,14 @@
 {% extends 'layouts/base.html'%}
+{% load bootstrap5 %}
 
 {% block corner %}
+
+{% if request.user.is_authenticated %}
+{% include 'includes/registretedUserCorner.html' %}
+{% else %}
 {% include 'includes/unregistretedUserCorner.html' %}
+{% endif %}
+
 {% endblock %}
 
 
@@ -16,40 +23,12 @@
 
 {% block content %}
 
-<form class="was-validated col-6">
-  <div class="mb-3">
-    <label class="form-label">Login</label>
-    <input class="form-control" type="text" id="login" required />
-    <div class="invalid-feedback">Please enter a login</div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Email</label>
-    <input class="form-control" type="text" id="email" required />
-    <div class="invalid-feedback">Please enter an email</div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">NickName</label>
-    <input class="form-control" type="text" id="nickName" required />
-    <div class="invalid-feedback">Please enter an NickName</div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Password</label>
-    <input class="form-control" type="text" id="password" required />
-    <div class="invalid-feedback">Please enter an password</div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Repeat password</label>
-    <input class="form-control" type="text" id="reapeatenPassword" required />
-    <div class="invalid-feedback">Please repeat a password</div>
-  </div>
-  <div class="mb-3">
-    <label class="form-label">Upload avatar</label>
-    <input type="file" class="form-control" aria-label="file example" required />
-    <div class="invalid-feedback">Please choose a file</div>
-  </div>
-  <div>
-    <button type="submit" class="btn btn-primary">Register</button>
-  </div>
+<form action="{% url 'signup' %}" method="POST" class="was-validated col-6">
+  {% bootstrap_form form %}
+  {% csrf_token %}
+  {% buttons %}
+  <button type="submit" class="btn btn-primary">Register</button>
+  {% endbuttons %}
 </form>
 
 {% endblock %}
