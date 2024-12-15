@@ -1,5 +1,11 @@
 <div class="d-flex gap-1">
-    <img src="asda.jpg" alt="Avatar" class="img-thumbnail" />
+    <div class="rounded-circle overflow-hidden border bg-light" style="width: 100px; height: 100px;">
+        {% if request.user.profile.avatar %}
+        <img src="{{ request.user.profile.avatar.url }}" alt="Avatar" class="w-100 h-100 object-fit-cover" />
+        {% else %}
+        <img src="default.jpg" alt="Default Avatar" class="w-100 h-100 object-fit-cover" />
+        {% endif %}
+    </div>
     <div>
         <div>{{ request.user.username }}</div>
         <a href="{% url 'settings' %}">settings</a>

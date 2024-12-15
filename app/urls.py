@@ -1,4 +1,6 @@
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
@@ -12,3 +14,7 @@ urlpatterns = [
     path('question/<int:question_id>', views.question, name='question'),
     path('tag/<str:tag_title>', views.tag, name='tag'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL,
+                          document_root=settings.MEDIA_ROOT)

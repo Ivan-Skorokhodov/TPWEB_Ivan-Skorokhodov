@@ -23,7 +23,7 @@
 
 {% block content %}
 
-<form action="{% url 'signup' %}" method="POST" class="was-validated col-6">
+<form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data" class="was-validated col-6">
   {% bootstrap_form form %}
   {% csrf_token %}
   {% buttons %}
