@@ -23,7 +23,7 @@
 
 {% block content %}
 
-<form action="{% url 'settings' %}" method="POST" class="form-group col-6">
+<form action="{% url 'settings' %}" method="POST" enctype="multipart/form-data" class="form-group col-6">
     {% bootstrap_form form %}
     {% csrf_token %}
     {% buttons %}

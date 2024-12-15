@@ -97,7 +97,8 @@ def ask(request):
 def settings(request):
     form = forms.SettingsForm(instance=request.user)
     if request.method == 'POST':
-        form = forms.SettingsForm(request.POST, instance=request.user)
+        form = forms.SettingsForm(
+            request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             return render(request, 'settings.html', {'form': form})
