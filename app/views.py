@@ -145,3 +145,38 @@ def like_question_async(request, question_id):
     question = models.Question.objects.get_question_by_question_id(question_id)
 
     return JsonResponse({'likesCount': question.likes})
+
+
+@require_http_methods(['POST'])
+@login_required
+def like_answer_async(request, answer_id):
+    user = request.user
+    answer_like, created = models.AnswerLike.objects.get_or_create(
+        profile=models.Profile.objects.get(user=user),
+        answer=models.Answer.objects.get(pk=answer_id)
+    )
+    if not created:
+        answer_like.delete()
+
+    answer = models.Answer.objects.get_answer_by_answer_id(answer_id)
+
+    return JsonResponse({'likesCount': answer.likes})
+
+
+@require_http_methods(['POST'])
+@login_required
+def correct_answer_async(request, answer_id):
+    user = request.user
+    answer = models.Answer.objects.get(pk=answer_id)
+
+    if user == answer.profile.user:
+        correct_answer, created = models.CorrectAnswer.objects.get_or_create(
+            profile=models.Profile.objects.get(user=user),
+            answer=answer
+        )
+        if not created:
+            correct_answer.delete()
+            return JsonResponse({'isCorrect': False})
+        return JsonResponse({'isCorrect': True})
+
+    return JsonResponse({'isCorrect': False})

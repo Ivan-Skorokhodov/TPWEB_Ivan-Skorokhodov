@@ -11,8 +11,13 @@
                         style="object-fit: cover;" />
                     {% endif %}
                 </div>
-                <input class="form-control" type="number" value="{{ answer.likes }}" placeholder="Default input"
-                    aria-label="default input example" />
+                <div class="input-group">
+                    <input class="form-control" type="number" value="{{ answer.likes }}" placeholder="Likes"
+                        aria-label="Likes count" id="corrects-counter" data-answer-id="{{ answer.id }}" />
+                    <button class="btn btn-outline-primary" type="button" id="correct-btn">
+                        <i class="bi bi-heart"></i> Like
+                    </button>
+                </div>
             </div>
             <div class="col-9">
                 <h5 class="card-title">{{ answer.title }}</h5>
@@ -21,8 +26,9 @@
                 </p>
 
                 <div class="form-check">
-                    <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
-                    <label class="form-check-label" for="flexCheckDefault">
+                    <input class="form-check-input" type="checkbox" value="" data-answer-id="{{ answer.id }}"
+                        id="flexCheck" {% if answer.is_correct %} checked {% endif %} />
+                    <label class="form-check-label" for="flexCheck">
                         Correct!
                     </label>
                 </div>

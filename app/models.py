@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models import Exists, OuterRef
 
 # Create your models here.
 
@@ -39,7 +40,13 @@ class QuestionManager(models.Manager):
 class AnswerManager(models.Manager):
     def get_answers_by_question(self, question):
         return Answer.objects.filter(question=question).annotate(
+            is_correct=Exists(
+                CorrectAnswer.objects.filter(answer=OuterRef('pk')))).annotate(
             likes=models.Count('answerlike')).order_by("-likes")
+
+    def get_answer_by_answer_id(self, answer_id):
+        return Answer.objects.annotate(
+            likes=models.Count('answerlike')).get(pk=answer_id)
 
 
 class TagManager(models.Manager):
@@ -97,6 +104,16 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class CorrectAnswer(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ["profile", "answer"]
 
 
 class AnswerLike(models.Model):

@@ -15,6 +15,10 @@ urlpatterns = [
     path('tag/<str:tag_title>', views.tag, name='tag'),
     path('like/<int:question_id>',
          views.like_question_async, name='question_like'),
+    path('answerLike/<int:answer_id>',
+         views.like_answer_async, name='aswer_like'),
+    path('correct/<int:answer_id>',
+         views.correct_answer_async, name='aswer_correct'),
 ]
 
 if settings.DEBUG:

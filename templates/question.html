@@ -28,8 +28,13 @@
               style="object-fit: cover;" />
             {% endif %}
           </div>
-          <input class="form-control" type="number" value="{{ question.likes }}" placeholder="Default input"
-            aria-label="default input example" />
+          <div class="input-group">
+            <input class="form-control" type="number" value="{{ question.likes }}" placeholder="Likes"
+              aria-label="Likes count" id="likes-counter" data-question-id="{{ question.id }}" />
+            <button class="btn btn-outline-primary" type="button" id="like-btn">
+              <i class="bi bi-heart"></i> Like
+            </button>
+          </div>
         </div>
         <div class="col-9">
           <h2 class="card-title text-center">

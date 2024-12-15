@@ -39,6 +39,62 @@ const init = () => {
         });
     });
   });
+
+  const CorrectButtons = document.querySelectorAll("button#correct-btn");
+
+  const CorrectsCounter = document.querySelectorAll("input#corrects-counter");
+
+  CorrectButtons.forEach((button, index) => {
+    button.addEventListener("click", function () {
+      const answerId = parseInt(CorrectsCounter[index].dataset.answerId, 10);
+
+      const request = new Request(`/answerLike/${answerId}`, {
+        method: "post",
+        headers: {
+          "X-CSRFToken": csrftoken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      fetch(request)
+        .then((response) => response.json())
+        .then((data) => {
+          const counter = CorrectsCounter[index];
+          counter.value = data.likesCount;
+        });
+    });
+  });
+
+  const correctCheckboxes = document.querySelectorAll("input.form-check-input");
+
+  correctCheckboxes.forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
+      const answerId = parseInt(checkbox.dataset.answerId, 10);
+
+      const request = new Request(`/correct/${answerId}`, {
+        method: "POST",
+        headers: {
+          "X-CSRFToken": csrftoken,
+          "Content-Type": "application/json",
+        },
+      });
+
+      fetch(request)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          if (data.isCorrect) {
+            checkbox.checked = true;
+          } else {
+            checkbox.checked = false;
+          }
+        });
+    });
+  });
 };
 
 init();
