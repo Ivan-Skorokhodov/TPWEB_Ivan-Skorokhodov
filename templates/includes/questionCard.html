@@ -13,8 +13,8 @@
                 </div>
                 <div class="input-group">
                     <input class="form-control" type="number" value="{{ question.likes }}" placeholder="Likes"
-                        aria-label="Likes count" />
-                    <button class="btn btn-outline-primary" type="button">
+                        aria-label="Likes count" id="likes-counter" data-question-id="{{ question.id }}" />
+                    <button class="btn btn-outline-primary" type="button" id="like-btn">
                         <i class="bi bi-heart"></i> Like
                     </button>
                 </div>

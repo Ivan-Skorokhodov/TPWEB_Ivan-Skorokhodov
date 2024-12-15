@@ -5,6 +5,8 @@ from app import models
 from app import forms
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_http_methods
+from django.http import JsonResponse
 
 
 def paginate(objects_list, request, per_page=10):
@@ -127,3 +129,19 @@ def question(request, question_id):
             return render(request, 'question.html', {'question': question, 'answers': page.object_list, 'tags': tags, 'page_obj': page, 'form': form})
 
     return render(request, 'question.html', {'question': question, 'answers': page.object_list, 'tags': tags, 'page_obj': page, 'form': form})
+
+
+@require_http_methods(['POST'])
+@login_required
+def like_question_async(request, question_id):
+    user = request.user
+    question_like, created = models.QuestionLike.objects.get_or_create(
+        profile=models.Profile.objects.get(user=user),
+        question=models.Question.objects.get(pk=question_id)
+    )
+    if not created:
+        question_like.delete()
+
+    question = models.Question.objects.get_question_by_question_id(question_id)
+
+    return JsonResponse({'likesCount': question.likes})
