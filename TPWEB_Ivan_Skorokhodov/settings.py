@@ -125,7 +125,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_ROOT = BASE_DIR / 'static'
+# STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = 'static/'
 
 # Default primary key field type
@@ -150,6 +150,12 @@ CENTRIFUGO_WS_URL = 'ws://127.0.0.1:8010/connection/websocket'
 QUOTE_URL = 'http://127.0.0.1:8010'
 QUOTE_API_KEY = 'my_api_key'
 
-
 CENTRIFUGO_API_URL = "http://127.0.0.1:8010/api"
 CENTRIFUGO_API_KEY = "my_api_key"
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "/home/skor/WebTP/django_cache",
+    }
+}

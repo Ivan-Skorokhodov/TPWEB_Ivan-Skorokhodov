@@ -8,6 +8,23 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from cent import Client, PublishRequest
+from django.conf import settings as settings_config
+
+
+def send_answer_async(request, answer, question_id):
+    profile = answer.profile
+    if profile.avatar:
+        avatar = profile.avatar.url
+    else:
+        avatar = "/uploads/images/default.jpg"
+
+    api_url = settings_config.CENTRIFUGO_API_URL
+    api_key = settings_config.CENTRIFUGO_API_KEY
+
+    client = Client(api_url, api_key)
+    centifugo_request = PublishRequest(channel=str(question_id), data={
+        "avatar": avatar, "likes": 0, "answer_id": answer.id, "title": answer.title, "content": answer.content, "is_correct": False})
+    client.publish(centifugo_request)
 
 
 def paginate(objects_list, request, per_page=10):
@@ -127,21 +144,7 @@ def question(request, question_id):
         form = forms.AnswerForm(request.POST)
         if form.is_valid():
             answer = form.save(request, question)
-
-            profile = answer.profile
-            if profile.avatar:
-                avatar = profile.avatar.url
-            else:
-                avatar = "/uploads/images/default.jpg"
-
-            api_url = "http://localhost:8010/api"
-            api_key = "my_api_key"
-
-            client = Client(api_url, api_key)
-            centifugo_request = PublishRequest(channel=str(question_id), data={
-                "avatar": avatar, "likes": 0, "answer_id": answer.id, "title": answer.title, "content": answer.content, "is_correct": False})
-            client.publish(centifugo_request)
-
+            send_answer_async(request, answer, question_id)
             return render(request, 'question.html', {'question': question, 'answers': page.object_list, 'tags': tags, 'page_obj': page, 'form': form})
 
     return render(request, 'question.html', {'question': question, 'answers': page.object_list, 'tags': tags, 'page_obj': page, 'form': form})
