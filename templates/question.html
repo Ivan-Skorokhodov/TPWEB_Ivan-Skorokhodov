@@ -61,6 +61,67 @@
     {% endfor %}
   </div>
 
+  <script src="https://unpkg.com/centrifuge@5.0.1/dist/centrifuge.js"></script>
+  <script type="text/javascript">
+    const container = document.getElementById('counter_WS');
+
+    const centrifuge = new Centrifuge("{{ ws_url }}", {
+      token: "{{ token }}"
+    });
+
+    centrifuge.on('connecting', function (ctx) {
+      console.log(`connecting: ${ctx.code}, ${ctx.reason}`);
+    }).on('connected', function (ctx) {
+      console.log(`connected over ${ctx.transport}`);
+    }).on('disconnected', function (ctx) {
+      console.log(`disconnected: ${ctx.code}, ${ctx.reason}`);
+    }).connect();
+
+    const sub = centrifuge.newSubscription("{{ question.id }}");
+
+    sub.on('publication', function (ctx) {
+      const data = ctx.data;
+
+      const newAnswerHtml = `
+    <div class="card w-100" style="width: 18rem">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-3">
+                    <div class="border mb-2" style="height: 100px; overflow: hidden;">
+                        <img src="${data.avatar}" alt="Avatar" class="img-fluid w-100 h-100" style="object-fit: cover;" />
+                    </div>
+                    <div class="input-group">
+                        <input class="form-control" type="number" value="${data.likes}" placeholder="Likes"
+                          aria-label="Likes count" id="corrects-counter" data-answer-id="${data.answer_id}" />
+                        <button class="btn btn-outline-primary" type="button" id="correct-btn">
+                            <i class="bi bi-heart"></i> Like
+                        </button>
+                    </div>
+                </div>
+                <div class="col-9">
+                    <h5 class="card-title">${data.title}</h5>
+                    <p class="card-text mb-5">${data.content}</p>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" data-answer-id="${data.answer_id}" ${data.is_correct ? "checked" : ""} />
+                        <label class="form-check-label">Correct!</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  `;
+
+      const answersContainer = document.querySelector(".d-flex.flex-column.mt-4.mb-4.gap-3");
+      answersContainer.insertAdjacentHTML("beforeend", newAnswerHtml);
+    }).on('subscribing', function (ctx) {
+      console.log(`subscribing: ${ctx.code}, ${ctx.reason}`);
+    }).on('subscribed', function (ctx) {
+      console.log('subscribed', ctx);
+    }).on('unsubscribed', function (ctx) {
+      console.log(`unsubscribed: ${ctx.code}, ${ctx.reason}`);
+    }).subscribe();
+  </script>
+
   {% include 'includes/paginator.html' %}
 
   <form action="{% url 'question' question.id %}" method="POST" class="form-group">

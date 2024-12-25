@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'app.context_processors.global_settings',
             ],
         },
     },
@@ -142,3 +143,13 @@ LOGIN_URL = '/login/'
 
 MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/uploads/'
+
+CENTRIFUGO_SECRET_KEY = 'my_secret'
+CENTRIFUGO_WS_URL = 'ws://127.0.0.1:8010/connection/websocket'
+
+QUOTE_URL = 'http://127.0.0.1:8010'
+QUOTE_API_KEY = 'my_api_key'
+
+
+CENTRIFUGO_API_URL = "http://127.0.0.1:8010/api"
+CENTRIFUGO_API_KEY = "my_api_key"
