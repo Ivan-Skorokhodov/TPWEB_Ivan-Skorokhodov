@@ -1,6 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.db.models import Exists, OuterRef
+from django.contrib.postgres.search import SearchVectorField
+from django.db.models.signals import pre_save
+from django.dispatch import receiver
+from django.contrib.postgres.search import SearchVector
 
 # Create your models here.
 
@@ -84,11 +88,17 @@ class Question(models.Model):
         Profile, on_delete=models.CASCADE, default=None)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    search_vector = SearchVectorField(null=True)
 
     objects = QuestionManager()
 
     def __str__(self):
         return self.title
+
+
+@receiver(pre_save, sender=Question)
+def update_search_vector(sender, instance, **kwargs):
+    instance.search_vector = SearchVector('title', 'text')
 
 
 class Answer(models.Model):

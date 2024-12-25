@@ -20,11 +20,61 @@
           aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        <div class="col-8">
+          <form class="d-flex flex-grow-1" role="search" style="position: relative;">
+            <input class="form-control me-2" id="search-input" type="search" placeholder="Search" aria-label="Search"
+              autocomplete="off" />
+            <ul id="search-results" class="dropdown-menu"
+              style="display: none; position: absolute; width: 100%; z-index: 1000;"></ul>
+          </form>
 
-        <form action="{% url 'ask' %}" method="GET" class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" />
-          <button class="btn btn-outline-success" type="submit">Ask</button>
-        </form>
+          <script>
+            const searchInput = document.getElementById('search-input');
+            const searchResults = document.getElementById('search-results');
+
+            searchInput.addEventListener('input', () => {
+              const query = searchInput.value;
+              if (query.length > 2) {
+                fetch(`/search/?q=${encodeURIComponent(query)}`)
+                  .then(response => response.json())
+                  .then(results => {
+                    searchResults.innerHTML = '';
+                    if (results.length) {
+                      searchResults.style.display = 'block';
+                      results.forEach(item => {
+                        const li = document.createElement('li');
+                        li.className = 'dropdown-item';
+
+                        const link = document.createElement('a');
+                        link.href = `/question/${item.id}`;
+                        link.textContent = item.title;
+                        link.style.textDecoration = 'none';
+                        link.style.color = 'inherit';
+
+                        li.appendChild(link);
+                        searchResults.appendChild(li);
+                      });
+                    } else {
+                      searchResults.style.display = 'none';
+                    }
+                  });
+              } else {
+                searchResults.style.display = 'none';
+              }
+            });
+
+            document.addEventListener('click', (event) => {
+              if (!searchInput.contains(event.target)) {
+                searchResults.style.display = 'none';
+              }
+            });
+          </script>
+
+          <form action="{% url 'ask' %}" method="GET" class="d-flex" role="search">
+            <button class="btn btn-outline-success" type="submit">Ask</button>
+          </form>
+
+        </div>
 
         {% block corner %}
         {% endblock %}

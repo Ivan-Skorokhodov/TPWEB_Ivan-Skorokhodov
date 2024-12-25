@@ -19,6 +19,7 @@ urlpatterns = [
          views.like_answer_async, name='aswer_like'),
     path('correct/<int:answer_id>',
          views.correct_answer_async, name='aswer_correct'),
+    path('search/', views.search_questions, name='search_questions'),
 ]
 
 """

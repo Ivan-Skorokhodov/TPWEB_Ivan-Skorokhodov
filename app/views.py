@@ -9,6 +9,7 @@ from django.views.decorators.http import require_http_methods
 from django.http import JsonResponse
 from cent import Client, PublishRequest
 from django.conf import settings as settings_config
+from django.contrib.postgres.search import SearchQuery, SearchVector, SearchRank
 
 
 def send_answer_async(request, answer, question_id):
@@ -199,3 +200,22 @@ def correct_answer_async(request, answer_id):
         return JsonResponse({'isCorrect': True})
 
     return JsonResponse({'isCorrect': False})
+
+
+def search_questions(request):
+    query = request.GET.get('q', '')
+    if query:
+        vector = SearchVector('title', weight='A') + \
+            SearchVector('content', weight='B')
+        search_query = SearchQuery(query)
+
+        questions = (
+            models.Question.objects.annotate(
+                rank=SearchRank(vector, search_query))
+            .filter(rank__gte=0.1)
+            .order_by('-rank')[:10]
+        )
+        results = [{'title': q.title, 'id': q.id} for q in questions]
+    else:
+        results = []
+    return JsonResponse(results, safe=False)
